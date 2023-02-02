@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "X7wWcJXDotfXKeAKkn/CW3CeateCl5iuEISMyGx/QSZTtukzSfNHPX56HRMfkl2cMkGy2AE1xAOHx0IvoCv2XA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\basso\\OneDrive\\IT391 - Programming Class\\IT391_Basso_M5 - google maps api web app\\IT391_Basso_M5.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\basso\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
+  "logs": []
+}

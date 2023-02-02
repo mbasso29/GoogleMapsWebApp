@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Address Locator";
+}
+<head><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script></head>
+<body>
+    <div class="text-center">
+        <h1 class="display-4" style="color:darkgreen"><b>Search for an address</b></h1>
+        <hr />
+        <form action="/action_page.html" method="get">
+            <label for="Street Address" style="color:darkgreen"><b>Street Address:</b></label><br>
+            <input type="text" id="address" name="Street Address" /><br><br>
+            <label for="City" style="color:darkgreen"><b>City:</b></label><br>
+            <input type="text" id="city" name="City" /><br><br>
+            <label for="State" style="color:darkgreen"><b>State:</b></label><br>
+            <input type="text" id="state" name="State" /><br><br>
+            <label for="Zip Code" style="color:darkgreen"><b>Zip Code:</b></label><br>
+            <input type="text" id="zipcode" name="Zip Code" /><br><br>
+            <button type="button" style="color:darkgreen" onclick="lookupAddress()"><b>Search</b></button>
+        </form>
+    </div>
+    <div class="text-center">
+        <hr />
+        <label for="Road View" style="padding:5px;color:darkgreen"><b>Road View</b></label>
+        <input type="radio" id="road" name="mapView" onclick="showMap(1)"/><br>
+        <iframe id="roadFrame"
+                width="450"
+                height="250"
+                frameborder="0" style="border:0; display:none"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyA1kFIaMG7Q5jeLJb0XU8UxtqYtcYLj3_g&maptype=roadmap&q=Eiffel+Tower,Paris+France"
+                allowfullscreen>
+        </iframe><br />
+        <label for="Satellite View" style="padding:5px;color:darkgreen"><b>Satellite View</b></label>
+        <input type="radio" id="satellite" name="mapView" onclick="showMap(2)" /><br>
+        <iframe id="satFrame"
+                width="450"
+                height="250"
+                frameborder="0" style="border: 0; display: none"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyA1kFIaMG7Q5jeLJb0XU8UxtqYtcYLj3_g&maptype=satellite&q=Eiffel+Tower,Paris+France"
+                allowfullscreen>
+        </iframe><br />
+    </div>
+</body>
+<script>
+    function lookupAddress()
+    {
+        let address = encodeURIComponent($("#address").val());
+        let city = encodeURIComponent($("#city").val());
+        let state = encodeURIComponent($("#state").val());
+        let zipcode = encodeURIComponent($("#zipcode").val());
+        
+
+        let geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "," + city + "," + state + " " + zipcode + "&key=AIzaSyA1kFIaMG7Q5jeLJb0XU8UxtqYtcYLj3_g";
+        $.ajax({
+            url: geocodeUrl,
+            type: 'GET',
+            success: function (data) {
+                //will add code to do the maps next
+                console.log(data);
+                let latitude = data.results[0].geometry.location.lat;
+                let longitude = data.results[0].geometry.location.lng;
+                let satellitemapURL = "https://www.google.com/maps/embed/v1/search?key=AIzaSyA1kFIaMG7Q5jeLJb0XU8UxtqYtcYLj3_g&maptype=satellite&q=" + latitude + "," + longitude;
+                let roadmapURL = "https://www.google.com/maps/embed/v1/search?key=AIzaSyA1kFIaMG7Q5jeLJb0XU8UxtqYtcYLj3_g&maptype=roadmap&q=" + latitude + "," + longitude;
+                $("#roadFrame").attr("src", roadmapURL);
+                $("#satFrame").attr("src", satellitemapURL);
+                showMap(1);
+            }
+        });
+    }
+    function showMap(mapNo)
+    {
+        if (mapNo == 1) {
+            $("#roadFrame").show();
+            $("#satFrame").hide();
+        }
+        else if (mapNo == 2) {
+            $("#roadFrame").hide();
+            $("#satFrame").show();
+        }
+        else if (mapNo == 3) {
+            $("#roadFrame").hide();
+            $("#satFrame").hide();
+        }
+    }
+</script>
